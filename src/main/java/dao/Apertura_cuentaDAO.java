@@ -22,29 +22,29 @@ public class Apertura_cuentaDAO
 {
     public int comprobar_cuenta_existente(String cu_ncu2)
     {
-//        long resultado = 0;
-//        
-//        List<Cuenta> lista = null;
-//        Connection con = null;
-//        try {
-//            con = DBConnection.getInstance().getConnection();
-//            QueryRunner qr = new QueryRunner();
-//            ResultSetHandler<List<Cuenta>> h = new BeanListHandler<>(Cuenta.class);
-//            lista = qr.query(con, "select cu_ncu from cuentas where cu_ncu = ?", h, cu_ncu2);
-//            
-//            if (lista.size() > 0)
-//                {
-//                    resultado = 1;
-//                }
-//            
-//            
-//        } catch (Exception ex) {
-//            Logger.getLogger(Apertura_cuentaDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            DBConnection.getInstance().cerrarConexion(con);
-//        }
-//        
-//        return (int) resultado;
+        long resultado = 0;
+        DBConnection db = new DBConnection();
+        List<Cuenta> lista = null;
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            QueryRunner qr = new QueryRunner();
+            ResultSetHandler<List<Cuenta>> h = new BeanListHandler<>(Cuenta.class);
+            lista = qr.query(con, "select cu_ncu from cuentas where cu_ncu = ?", h, cu_ncu2);
+            
+            if (lista.size() > 0)
+                {
+                    resultado = 1;
+                }
+            
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Apertura_cuentaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.cerrarConexion(con);
+        }
+        
+        return (int) resultado;
     }
 }
 

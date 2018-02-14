@@ -69,11 +69,11 @@
                         data:datos2,
                         success:function(resp)
                         {
-                            if(resp > 1)
+                            if(resp == 0)
                             {
                                 alert("La cuenta "+cu_ncu+" no existe, puede ser creada");
                             }
-                            else if (resp == 1)
+                            else if (resp >0)
                             {
                                 alert("La cuenta "+cu_ncu+" ya existe, pon otro número");
                                 return;
@@ -81,9 +81,25 @@
                             else
                             {
                                 alert("Ha habido un error en la comprobacion de cuenta");
+                                return;
                             }
                         }
                 })
+                
+                //Comprobar formato dni en cliente
+                expresion = new RegExp ("^[0-7][0-9]{7}-[A-Z]$", "g");
+                   valido = (expresion.test (cu_dn1));
+                   
+                   if (cu_dn2 != null)
+                   {
+                       valido = (expresion.test (cu_dn2));
+                       if (valido == false)
+                       {
+                           alert("Asegurate que el formato del DNI 2 es el siguiente: "^[0-7][0-9]{7}-[A-Z]$", "g1);
+                       }
+                   }
+                   valido = (expresion.test (cu_dn2));
+                   alert(valido);
             }
         </script>
     </head>
