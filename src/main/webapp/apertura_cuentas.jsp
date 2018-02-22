@@ -88,18 +88,14 @@
                 
                 //Comprobar formato dni en cliente
                 expresion = new RegExp ("^[0-7][0-9]{7}-[A-Z]$", "g");
-                   valido = (expresion.test (cu_dn1));
-                   
-                   if (cu_dn2 != null)
-                   {
-                       valido = (expresion.test (cu_dn2));
-                       if (valido == false)
-                       {
-                           alert("Asegurate que el formato del DNI 2 es el siguiente: "^[0-7][0-9]{7}-[A-Z]$", "g1);
-                       }
-                   }
-                   valido = (expresion.test (cu_dn2));
-                   alert(valido);
+                valido = (expresion.test (cu_dn1));
+                    if (valido == false)
+                    {
+                        alert("Asegúrate que el formato del DNI 1 es el siguiente: '^[0-7][0-9]{7}-[A-Z]$', 'g1'");
+                        return;
+                    }
+                    
+                //Comprobar si elk titular ya esta dado de alta en la tabla clientes
             }
         </script>
     </head>

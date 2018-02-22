@@ -65,6 +65,13 @@ public class Apertura_cuenta extends HttpServlet
 
                 response.getWriter().print(servicio.comprobar_cuenta_existente(cu_ncu2));
                 break;
+                
+            case ("comprobar_dni_existente"):
+                String cu_dn1 = request.getParameter("cu_dn1");
+                Apertura_cuentaServicios servicio1 = new Apertura_cuentaServicios();
+                    
+                response.getWriter().print(servicio1.comprobar_dni_existente(cu_dn1));
+                break;
         }
         
     }

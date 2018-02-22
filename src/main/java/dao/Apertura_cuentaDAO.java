@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Cliente;
 import model.Cuenta;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -45,6 +46,26 @@ public class Apertura_cuentaDAO
         }
         
         return (int) resultado;
+    }
+    
+    public List<Cliente> comprobar_dni_existente(String cu_dn1)
+    {
+        long resultado = 0;
+        DBConnection db = new DBConnection();
+        List<Cliente> lista = null;
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            QueryRunner qr = new QueryRunner();
+            ResultSetHandler<List<Cliente>> h = new BeanListHandler<>(Cliente.class);
+            lista = qr.query(con, " select * from clientes where cl_dni = ?", h, cu_dn1);
+        } catch (Exception ex) {
+            Logger.getLogger(Apertura_cuentaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.cerrarConexion(con);
+        }
+        
+        return lista;
     }
 }
 
