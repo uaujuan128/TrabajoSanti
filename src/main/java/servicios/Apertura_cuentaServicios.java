@@ -29,11 +29,11 @@ public class Apertura_cuentaServicios
         if (lista_cliente.size() > 0)
         {
             Cliente cliente = lista_cliente.get(0);
-            resultado = "Este cliente ya existe. Éstos son sus datos: ";
+            resultado = "Este cliente ya existe. Estos son sus datos: "+lista_cliente.get(0).getCl_dni()+", "+lista_cliente.get(0).getCl_nom()+", "+lista_cliente.get(0).getCl_dir()+", "+lista_cliente.get(0).getCl_tel()+", "+lista_cliente.get(0).getCl_ema()+", "+lista_cliente.get(0).getCl_fna()+", "+lista_cliente.get(0).getCl_fcl()+", "+lista_cliente.get(0).getCl_ncu()+", "+lista_cliente.get(0).getCl_sal();
         }
         else
         {
-            
+            resultado = "Este cliente no existe, tienes que crearlo antes";
         }
         
         return resultado;

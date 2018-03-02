@@ -87,15 +87,42 @@
                 })
                 
                 //Comprobar formato dni en cliente
-                expresion = new RegExp ("^[0-7][0-9]{7}-[A-Z]$", "g");
+                expresion = new RegExp ("^[0-7][0-9]{7}[A-Z]$", "g");
                 valido = (expresion.test (cu_dn1));
                     if (valido == false)
                     {
-                        alert("Asegúrate que el formato del DNI 1 es el siguiente: '^[0-7][0-9]{7}-[A-Z]$', 'g1'");
+                        alert("Asegúrate que el formato del DNI 1 es el siguiente: '^[0-7][0-9]{7}[A-Z]$', 'g1'");
                         return;
                     }
                     
-                //Comprobar si elk titular ya esta dado de alta en la tabla clientes
+                //Comprobar si el titular ya esta dado de alta en la tabla clientes
+                var datos3 = "cu_dn1="+cu_dn1+"&op=comprobar_dni_existente";
+                
+                $.ajax({
+                        type:'get',
+                        url:'apertura_cuenta',
+                        data:datos3,
+                        success:function(resp)
+                        {
+                            if (resp == "Este cliente no existe, tienes que crearlo antes")
+                            {
+                                var cl_nom = prompt("Introduce nombre");
+                                var cl_dir = prompt("introduce direccion");
+                                var cl_tel = prompt("Introduce telefono");
+                                var cl_ema = prompt("Introduce email");
+                                var cl_fna = prompt();
+                                
+                                var fecha =  new Date();
+                                var ano = fecha.getFullYear();
+                                var mes = fecha.getMonth()+1;
+                                var dia = fecha.getDate();
+                                var cl_fcl = ano+"-"+mes+"-"+dia;
+                                
+                                var cl_nom = new Date().now();
+                                var cl_sal = prompt();
+                            }
+                        }
+                })
             }
         </script>
     </head>
