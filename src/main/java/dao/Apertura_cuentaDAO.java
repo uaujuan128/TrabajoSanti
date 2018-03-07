@@ -67,6 +67,34 @@ public class Apertura_cuentaDAO
         
         return lista;
     }
+    
+    public int registrar_cliente1(String cl_dni, String cl_nom, String cl_dir, String cl_tel, String cl_ema, String cl_fna, String cl_fcl, String cl_sal)
+    {
+        DBConnection db = new DBConnection();
+        Connection con = null;
+        PreparedStatement pstm = null;
+        int filas = 0;
+        
+        try {
+            con = db.getConnection();
+            
+            String sql="INSERT INTO ALUMNOS (NOMBRE, FECHA_NACIMIENTO, MAYOR_EDAD) VALUES (?, ?, ?);";
+            
+            pstm = con.prepareStatement(sql);
+            
+            pstm.setString(1,u.getNombre());
+            pstm.setDate(2, new java.sql.Date(u.getFecha_nacimiento().getTime()));
+            pstm.setBoolean(3, u.getMayor_edad());
+            
+            filas = pstm.executeUpdate();
+            
+        } catch (Exception ex) {
+            Logger.getLogger(AlumnosDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.cerrarConexion(con);
+        }
+        return filas;
+    }
 }
 
 

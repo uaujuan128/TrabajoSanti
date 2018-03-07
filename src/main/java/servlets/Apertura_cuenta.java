@@ -8,6 +8,10 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.Integer.parseInt;
+import static java.lang.Long.parseLong;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -71,6 +75,26 @@ public class Apertura_cuenta extends HttpServlet
                 Apertura_cuentaServicios servicio1 = new Apertura_cuentaServicios();
                     
                 response.getWriter().print(servicio1.comprobar_dni_existente(cu_dn1));
+                break;
+                
+            case ("registrar_cliente1"):
+                String cl_dni = request.getParameter("cl_dni");
+                String cl_nom = request.getParameter("cl_nom");
+                String cl_dir = request.getParameter("cl_dir");
+                String cl_tel = request.getParameter("cl_tel");
+                String cl_ema = request.getParameter("cl_ema");
+                String cl_fna = request.getParameter("cl_fna");
+                String cl_fcl = request.getParameter("cl_fcl");
+                String cl_sal = request.getParameter("cl_sal");
+                
+                Instant timestamp =  Instant.ofEpochMilli(parseLong(cl_fcl));
+                ZoneId zone = null;
+                LocalDateTime ldt = LocalDateTime.ofInstant(timestamp, zone.systemDefault());
+                cl_fcl = ldt.getYear()+"-"+ldt.getMonth().getValue()+"-"+ldt.getDayOfMonth();
+                
+                Apertura_cuentaServicios servicio2 = new Apertura_cuentaServicios();
+                    
+                response.getWriter().print(servicio2.registrar_cliente1(cl_dni, cl_nom, cl_dir, cl_tel, cl_ema, cl_fna, cl_fcl, cl_sal));
                 break;
         }
         
