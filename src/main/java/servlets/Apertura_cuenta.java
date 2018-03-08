@@ -85,7 +85,6 @@ public class Apertura_cuenta extends HttpServlet
                 String cl_ema = request.getParameter("cl_ema");
                 String cl_fna = request.getParameter("cl_fna");
                 String cl_fcl = request.getParameter("cl_fcl");
-                String cl_sal = request.getParameter("cl_sal");
                 
                 Instant timestamp =  Instant.ofEpochMilli(parseLong(cl_fcl));
                 ZoneId zone = null;
@@ -94,7 +93,7 @@ public class Apertura_cuenta extends HttpServlet
                 
                 Apertura_cuentaServicios servicio2 = new Apertura_cuentaServicios();
                     
-                response.getWriter().print(servicio2.registrar_cliente1(cl_dni, cl_nom, cl_dir, cl_tel, cl_ema, cl_fna, cl_fcl, cl_sal));
+                response.getWriter().print(servicio2.registrar_cliente1(cl_dni, cl_nom, cl_dir, cl_tel, cl_ema, cl_fna, cl_fcl));
                 break;
         }
         

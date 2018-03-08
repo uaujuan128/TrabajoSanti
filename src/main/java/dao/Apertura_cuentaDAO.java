@@ -6,6 +6,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,7 +69,7 @@ public class Apertura_cuentaDAO
         return lista;
     }
     
-    public int registrar_cliente1(String cl_dni, String cl_nom, String cl_dir, String cl_tel, String cl_ema, String cl_fna, String cl_fcl, String cl_sal)
+    public int registrar_cliente1(String cl_dni, String cl_nom, String cl_dir, String cl_tel, String cl_ema, String cl_fna, String cl_fcl)
     {
         DBConnection db = new DBConnection();
         Connection con = null;
@@ -78,18 +79,22 @@ public class Apertura_cuentaDAO
         try {
             con = db.getConnection();
             
-            String sql="INSERT INTO ALUMNOS (NOMBRE, FECHA_NACIMIENTO, MAYOR_EDAD) VALUES (?, ?, ?);";
+            String sql="insert into clientes values (?, ?, ?, ?, ?, ?, ?, 0, 0);";
             
             pstm = con.prepareStatement(sql);
             
-            pstm.setString(1,u.getNombre());
-            pstm.setDate(2, new java.sql.Date(u.getFecha_nacimiento().getTime()));
-            pstm.setBoolean(3, u.getMayor_edad());
+            pstm.setString(1,cl_dni);
+            pstm.setString(2,cl_nom);
+            pstm.setString(3,cl_dir);
+            pstm.setString(4,cl_tel);
+            pstm.setString(5,cl_ema);
+            pstm.setString(6,cl_fna);
+            pstm.setString(7,cl_fcl);
             
             filas = pstm.executeUpdate();
             
         } catch (Exception ex) {
-            Logger.getLogger(AlumnosDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Apertura_cuentaDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             db.cerrarConexion(con);
         }

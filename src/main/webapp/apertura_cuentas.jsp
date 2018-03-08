@@ -87,9 +87,8 @@
                 })
                 
                 //Comprobar formato dni en cliente
-                expresion = new RegExp ("^[0-7][0-9]{7}[A-Z]$", "g");
-                valido = (expresion.test (cu_dn1));
-                    if (valido == false)
+                var expresion = new RegExp ("^[0-7][0-9]{7}[A-Z]$", "g");
+                    if (expresion.test(cu_dn1) == false)
                     {
                         alert("Asegúrate que el formato del DNI 1 es el siguiente: '^[0-7][0-9]{7}[A-Z]$', 'g1'");
                         return;
@@ -97,12 +96,21 @@
                
                 if(cu_dn2)
                 {
-                    valido2 = (expresion.test (cu_dn2));
-                    if (valido2 == false)
+                    if(cu_dn1 != cu_dn2)
                     {
-                        alert("Asegúrate que el formato del DNI 2 es el siguiente: '^[0-7][0-9]{7}[A-Z]$', 'g1'");
+                        var expresion2 = new RegExp ("^[0-7][0-9]{7}[A-Z]$", "g");
+                        if (expresion2.test(cu_dn2) == false)
+                        {
+                            alert("Asegúrate que el formato del DNI 2 es el siguiente: '^[0-7][0-9]{7}[A-Z]$', 'g1'");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        alert("Los dos dnis no pueden ser iguales");
                         return;
                     }
+                    
                 }
                     
                 //Comprobar si el dni1 ya esta dado de alta en la tabla clientes
@@ -116,19 +124,18 @@
                         {
                             if (resp == "Este cliente no existe, tienes que crearlo antes")
                             {
-                                var respuesta = confirm("Este cliente no existe, quieres crearlo antes?");
+                                var respuesta = confirm("El cliente asociado al dni "+cu_dn1+" no existe, quieres crearlo antes?");
                                 if (respuesta)
                                 {
                                     document.getElementById("registrar_cliente").innerHTML = 
                                             '<h2>Registrar cliente para DNI 1</h2>'+
-                                    'Dni: <input type="text" name="cl_dni" value="'+cu_dn1+'" /><br>'+
-                                    'Nombre: <input type="text" name="cl_nom" value="" /><br>'+
-                                    'Direción: <input type="text" name="cl_dir" value="" /><br>'+
-                                    'Télefono: <input type="text" name="cl_tel" value="" /><br>'+
-                                    'Email: <input type="text" name="cl_ema" value="" /><br>'+
-                                    'Nacimiento: <input type="date" name="cl_fna" value="" /><br>'+
-                                    'Salario: <input type="number" name="cl_sal"><br> '+
-                                    '<button onclick="registrar_cliente1()">Registrar</button>';
+                                    'Dni: <input type="text" id="cl_dni" value="'+cu_dn1+'" /><br>'+
+                                    'Nombre: <input type="text" id="cl_nom" value="" /><br>'+
+                                    'Direción: <input type="text" id="cl_dir" value="" /><br>'+
+                                    'Télefono: <input type="text" id="cl_tel" value="" /><br>'+
+                                    'Email: <input type="text" id="cl_ema" value="" /><br>'+
+                                    'Nacimiento: <input type="date" id="cl_fna" value="" /><br>'+
+                                    '<button onclick=\'registrar_cliente1("'+cu_ncu+'", "'+cu_dn1+'", "'+cu_dn2+'", "'+cu_sal+'")\'>Registrar</button>';
                                 }
                                 else
                                 {
@@ -136,55 +143,127 @@
                                     return;
                                 }
                             }
+                            else
+                            {
+                                comprobar_cliente2(cu_ncu, cu_dn1, cu_dn2, cu_sal);
+                            }
                         }
                 })
-                
-                //registrar cliente y continuar con dni2
-                
-                function registrar_cliente1()
-                {
-                    var cl_dni = document.getElementById("cl_dni").value;
-                    var cl_nom = document.getElementById("cl_nom").value;
-                    var cl_dir = document.getElementById("cl_dir").value;
-                    var cl_tel = document.getElementById("cl_tel").value;
-                    var cl_ema = document.getElementById("cl_ema").value;
-                    var cl_fna = document.getElementById("cl_fna").value;
-                    var cl_fcl = new Date.now();
-                    var cl_sal = document.getElementById("cl_sal").value;
-                    
-                    var datos3 = "cu_dni="+cu_dni+"&cl_nom="+cl_nom+"&cl_dir="+cl_dir+"&cl_tel="+cl_tel+"&cl_ema="+cl_ema+"&cl_fna="+cl_fna+"&cl_fcl="+cl_fcl+"&cl_sal="+cl_sal+"&op=registrar_cliente1";
-                
-                    $.ajax({
-                            type:'get',
-                            url:'apertura_cuenta',
-                            data:datos3,
-                            success:function(resp)
+            }
+            
+            function registrar_cliente1(cu_ncu, cu_dn1, cu_dn2, cu_sal)
+            {
+                var cl_dni = document.getElementById("cl_dni").value;
+                var cl_nom = document.getElementById("cl_nom").value;
+                var cl_dir = document.getElementById("cl_dir").value;
+                var cl_tel = document.getElementById("cl_tel").value;
+                var cl_ema = document.getElementById("cl_ema").value;
+                var cl_fna = document.getElementById("cl_fna").value;
+                var cl_fcl = Date.now();
+
+                var datos3 = "cl_dni="+cl_dni+"&cl_nom="+cl_nom+"&cl_dir="+cl_dir+"&cl_tel="+cl_tel+"&cl_ema="+cl_ema+"&cl_fna="+cl_fna+"&cl_fcl="+cl_fcl+"&op=registrar_cliente1";
+                $.ajax({
+                        type:'get',
+                        url:'apertura_cuenta',
+                        data:datos3,
+                        success:function(resp)
+                        {
+                            if (resp == 1)
                             {
-                                if (resp == "Este cliente no existe, tienes que crearlo antes")
+                                if (cu_dn2 != "")
                                 {
-                                    var respuesta = confirm("Este cliente no existe, quieres crearlo antes?");
-                                    if (respuesta)
-                                    {
-                                        document.getElementById("registrar_cliente").innerHTML = 
-                                                '<h2>Registrar cliente para DNI 1</h2>'+
-                                        'Dni: <input type="text" name="cl_dni" value="'+cu_dn1+'" /><br>'+
-                                        'Nombre: <input type="text" name="cl_nom" value="" /><br>'+
-                                        'Direción: <input type="text" name="cl_dir" value="" /><br>'+
-                                        'Télefono: <input type="text" name="cl_tel" value="" /><br>'+
-                                        'Email: <input type="text" name="cl_ema" value="" /><br>'+
-                                        'Nacimiento: <input type="date" name="cl_fna" value="" /><br>'+
-                                        'Salario: <input type="number" name="cl_sal"><br> '+
-                                        '<button onclick="registrar_cliente()">Registrar</button>';
-                                    }
-                                    else
-                                    {
-                                        alert("Has cancelado la operacion");
-                                        return;
-                                    }
+                                    comprobar_cliente2(cu_ncu, cu_dn1, cu_dn2, cu_sal);
+                                }
+                                else
+                                {
+                                    registrar_cuenta(cu_ncu, cu_dn1, cu_dn2, cu_sal);
                                 }
                             }
-                        })
+                            else
+                            {
+                                "Ha habido un error al introducir el cliente asociado al dni: "+cu_dn1;
+                            }
+                        } 
+                    })
+            }
+            
+            function comprobar_cliente2(cu_ncu, cu_dn1, cu_dn2, cu_sal)
+            {
+                var datos3 = "cu_dn1="+cu_dn2+"&op=comprobar_dni_existente";
+                
+                $.ajax({
+                        type:'get',
+                        url:'apertura_cuenta',
+                        data:datos3,
+                        success:function(resp)
+                        {
+                            if (resp == "Este cliente no existe, tienes que crearlo antes")
+                            {
+                                var respuesta = confirm("El cliente asociado al dni "+cu_dn2+" no existe, quieres crearlo antes?");
+                                if (respuesta)
+                                {
+                                    document.getElementById("registrar_cliente").innerHTML = 
+                                            '<h2>Registrar cliente para DNI 2</h2>'+
+                                    'Dni: <input type="text" id="cl_dni" value="'+cu_dn2+'" /><br>'+
+                                    'Nombre: <input type="text" id="cl_nom" value="" /><br>'+
+                                    'Direción: <input type="text" id="cl_dir" value="" /><br>'+
+                                    'Télefono: <input type="text" id="cl_tel" value="" /><br>'+
+                                    'Email: <input type="text" id="cl_ema" value="" /><br>'+
+                                    'Nacimiento: <input type="date" id="cl_fna" value="" /><br>'+
+                                    '<button onclick=\'registrar_cliente2("'+cu_ncu+'", "'+cu_dn1+'", "'+cu_dn2+'", "'+cu_sal+'")\'>Registrar</button>';
+                                }
+                                else
+                                {
+                                    alert("Has cancelado la operacion");
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                registrar_cuenta(cu_ncu, cu_dn1, cu_dn2, cu_sal);
+                            }
+                            
+                        }
+                })
+            }
+            
+            function registrar_cliente2(cu_ncu, cu_dn1, cu_dn2, cu_sal)
+            {
+                var cl_dni = document.getElementById("cl_dni").value;
+                var cl_nom = document.getElementById("cl_nom").value;
+                var cl_dir = document.getElementById("cl_dir").value;
+                var cl_tel = document.getElementById("cl_tel").value;
+                var cl_ema = document.getElementById("cl_ema").value;
+                var cl_fna = document.getElementById("cl_fna").value;
+                var cl_fcl = Date.now();
+
+                var datos3 = "cl_dni="+cl_dni+"&cl_nom="+cl_nom+"&cl_dir="+cl_dir+"&cl_tel="+cl_tel+"&cl_ema="+cl_ema+"&cl_fna="+cl_fna+"&cl_fcl="+cl_fcl+"&op=registrar_cliente1";
+                $.ajax({
+                        type:'get',
+                        url:'apertura_cuenta',
+                        data:datos3,
+                        success:function(resp)
+                        {
+                            if (resp == 1)
+                            {
+                                registrar_cuenta(cu_ncu, cu_dn1, cu_dn2, cu_sal);
+                            }
+                            else
+                            {
+                                "Ha habido un error al introducir el cliente asociado al dni: "+cu_dn2;
+                            }
+                        } 
+                    })
+            }
+            
+            function registrar_cuenta(cu_ncu, cu_dn1, cu_dn2, cu_sal)
+            {
+                if (cu_sal == "")
+                {
+                    cu_sal = "0";
                 }
+                
+                alert(cu_ncu+" - "+cu_dn1+" - "+cu_dn2+" - "+cu_sal);
             }
         </script>
     </head>
