@@ -69,7 +69,7 @@
                         data:datos2,
                         success:function(resp)
                         {
-                            if (resp >0)
+                            if (resp == "")
                             {
                                 alert("La cuenta "+cu_ncu+" ya existe, pon otro número");
                                 return;
@@ -269,7 +269,7 @@
                         data:datos3,
                         success:function(resp)
                         {
-                            if (resp == 4)
+                            if (resp > 2)
                             {
                                 alert("La cuenta con los siguientes datos "+cu_ncu+" - "+cu_dn1+" - "+cu_dn2+" - "+cu_sal+" ha sido registrada con exito");
                             }

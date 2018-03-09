@@ -23,7 +23,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
  */
 public class Apertura_cuentaDAO
 {
-    public int comprobar_cuenta_existente(String cu_ncu2)
+    public List<Cuenta> comprobar_cuenta_existente(String cu_ncu2)
     {
         long resultado = 0;
         DBConnection db = new DBConnection();
@@ -33,12 +33,9 @@ public class Apertura_cuentaDAO
             con = db.getConnection();
             QueryRunner qr = new QueryRunner();
             ResultSetHandler<List<Cuenta>> h = new BeanListHandler<>(Cuenta.class);
-            lista = qr.query(con, "select cu_ncu from cuentas where cu_ncu = ?", h, cu_ncu2);
+            lista = qr.query(con, "select * from cuentas where cu_ncu = ?", h, cu_ncu2);
             
-            if (lista.size() > 0)
-                {
-                    resultado = 1;
-                }
+           
             
             
         } catch (Exception ex) {
@@ -47,7 +44,7 @@ public class Apertura_cuentaDAO
             db.cerrarConexion(con);
         }
         
-        return (int) resultado;
+        return lista;
     }
     
     public List<Cliente> comprobar_dni_existente(String cu_dn1)
@@ -173,10 +170,10 @@ public class Apertura_cuentaDAO
             String mo_hor = hora+""+minuto+""+segundo;
             String mo_fec = ldt.getYear()+"-"+ldt.getMonth().getValue()+"-"+ldt.getDayOfMonth();
             
-            String sql3="insert into movimientos values (?, "+mo_fec+", "+mo_hor+", 'Alta de cuenta', ?)";
-            pstm4 = con.prepareStatement(sql2);
+            String sql3="insert into movimientos values (?, '"+mo_fec+"', '"+mo_hor+"', \"Alta de cuenta\", ?)";
+            pstm4 = con.prepareStatement(sql3);
             pstm4.setString(1, cu_ncu_2);
-            pstm4.setLong(1, cu_sal);
+            pstm4.setLong(2, cu_sal);
             
             filas4 = pstm4.executeUpdate();
             
@@ -187,6 +184,116 @@ public class Apertura_cuentaDAO
             db.cerrarConexion(con);
         }
         return filas+filas2+filas3+filas4;
+    }
+    
+    public long comprobar_saldo(String cu_ncu_3)
+    {
+        long resultado = 0;
+        DBConnection db = new DBConnection();
+        List<Cuenta> lista = null;
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            QueryRunner qr = new QueryRunner();
+            ResultSetHandler<List<Cuenta>> h = new BeanListHandler<>(Cuenta.class);
+            lista = qr.query(con, "select * from cuentas where cu_ncu = ?", h, cu_ncu_3);
+            
+            if (lista.size()>0)
+            {
+                resultado = lista.get(0).getCu_sal();
+            }
+           
+            
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Apertura_cuentaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.cerrarConexion(con);
+        }
+        
+        return resultado;
+    }
+    
+    public int eliminar_cuenta(String cu_ncu_4)
+    {
+        DBConnection db = new DBConnection();
+        Connection con = null;
+        PreparedStatement pstm = null;
+        PreparedStatement pstm2 = null;
+        PreparedStatement pstm3 = null;
+        List<Cliente> lista = null;
+        List<Cuenta> lista2 = null;
+        int n_cuentas = 0;
+        int filas = 0;
+        int filas2 = 0;
+        int filas3 = 0;
+        
+        try {
+            con = db.getConnection();
+            
+            //Obtener los dnis asociados al numero de cuenta
+            QueryRunner qr = new QueryRunner();
+            ResultSetHandler<List<Cuenta>> h = new BeanListHandler<>(Cuenta.class);
+            lista2 = qr.query(con, "select * from cuentas where cu_ncu = ?", h, cu_ncu_4);
+            String dni1 = lista2.get(0).getCu_dn1();
+            String dni2 = lista2.get(0).getCu_dn2();
+            
+            //Eliminar registro de la tabla cuentas
+            String sql="delete from cuentas where cu_ncu = ?";
+            
+            pstm = con.prepareStatement(sql);
+            pstm.setString(1,cu_ncu_4);
+            
+            filas = pstm.executeUpdate();
+            
+            //Comprobar el numero de cuentas abiertas para eliminar el cliente
+            
+            QueryRunner qr2 = new QueryRunner();
+            ResultSetHandler<List<Cliente>> h2 = new BeanListHandler<>(Cliente.class);
+            lista = qr2.query(con, "select * from clientes where cl_dni= ? or cl_dni= ?", h2, dni1, dni2);
+            
+            if(lista.size()>0)
+            {
+                for (int i = 0; i<lista.size(); i++)
+                {
+                    if (lista.get(i).getCl_ncu() == 1)
+                    {
+                        
+                        String sql3="delete from clientes where cl_dni = ?";
+            
+                        pstm2 = con.prepareStatement(sql3);
+                        pstm2.setString(1, lista.get(i).getCl_dni());
+
+                        filas = pstm2.executeUpdate();
+                    }
+                    else
+                    {
+                        String sql4="update clientes set cl_ncu = cl_ncu-1  where cl_dni = ?";
+            
+                        pstm3 = con.prepareStatement(sql4);
+                        pstm3.setString(1, lista.get(i).getCl_dni());
+
+                        filas = pstm3.executeUpdate();
+                    }
+                }
+            }
+            
+            //Eliminar movimientos 
+            String sql4="delete from movimientos where mo_ncu = ?";
+            
+            pstm3 = con.prepareStatement(sql4);
+            pstm3.setString(1,cu_ncu_4);
+            
+            filas = pstm3.executeUpdate();
+            
+            
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Apertura_cuentaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.cerrarConexion(con);
+        }
+        return filas;
     }
 }
 

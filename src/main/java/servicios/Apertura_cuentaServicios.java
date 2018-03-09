@@ -8,6 +8,7 @@ package servicios;
 import dao.Apertura_cuentaDAO;
 import java.util.List;
 import model.Cliente;
+import model.Cuenta;
 
 /**
  *
@@ -15,10 +16,20 @@ import model.Cliente;
  */
 public class Apertura_cuentaServicios
 {
-    public int comprobar_cuenta_existente(String cu_ncu2)
+    public String comprobar_cuenta_existente(String cu_ncu2)
     {
         Apertura_cuentaDAO dao = new Apertura_cuentaDAO();
-        return dao.comprobar_cuenta_existente(cu_ncu2);
+        List<Cuenta> lista = dao.comprobar_cuenta_existente(cu_ncu2);
+        String resultado = "";
+        
+        if(lista.size() > 0)
+        {
+            for (int i = 0; i<lista.size(); i++)
+            {
+                resultado += "Datos de la cuenta: "+lista.get(i).getCu_ncu()+" - "+lista.get(i).getCu_dn1()+" - "+lista.get(i).getCu_dn2()+" - "+lista.get(i).getCu_sal();
+            }
+        }
+        return resultado;
     }
     public String comprobar_dni_existente(String cu_dn1)
     {
@@ -48,5 +59,17 @@ public class Apertura_cuentaServicios
     {
         Apertura_cuentaDAO dao = new Apertura_cuentaDAO();
         return dao.registrar_cuenta(cu_ncu_2, cu_dn1_2, cu_dn2, cu_sal);
+    }
+    
+    public long comprobar_saldo(String cu_ncu_3)
+    {
+        Apertura_cuentaDAO dao = new Apertura_cuentaDAO();
+        return dao.comprobar_saldo(cu_ncu_3);
+    }
+    
+    public int eliminar_cuenta(String cu_ncu_4)
+    {
+        Apertura_cuentaDAO dao = new Apertura_cuentaDAO();
+        return dao.eliminar_cuenta(cu_ncu_4);
     }
 }

@@ -106,6 +106,22 @@ public class Apertura_cuenta extends HttpServlet
                     
                 response.getWriter().print(servicio3.registrar_cuenta(cu_ncu_2, cu_dn1_2, cu_dn2, cu_sal));
                 break;
+            case ("comprobar_saldo"):
+                String cu_ncu_3 = request.getParameter("cu_ncu");
+                
+                
+                Apertura_cuentaServicios servicio4 = new Apertura_cuentaServicios();
+                    
+                response.getWriter().print(servicio4.comprobar_saldo(cu_ncu_3));
+                break;
+            case ("eliminar_cuenta"):
+                String cu_ncu_4 = request.getParameter("cu_ncu");
+                
+                
+                Apertura_cuentaServicios servicio5 = new Apertura_cuentaServicios();
+                    
+                response.getWriter().print(servicio5.eliminar_cuenta(cu_ncu_4));
+                break;
         }
         
     }
