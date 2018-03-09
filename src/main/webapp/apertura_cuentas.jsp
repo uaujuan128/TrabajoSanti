@@ -69,18 +69,9 @@
                         data:datos2,
                         success:function(resp)
                         {
-                            if(resp == 0)
-                            {
-                                alert("La cuenta "+cu_ncu+" no existe, puede ser creada");
-                            }
-                            else if (resp >0)
+                            if (resp >0)
                             {
                                 alert("La cuenta "+cu_ncu+" ya existe, pon otro número");
-                                return;
-                            }
-                            else
-                            {
-                                alert("Ha habido un error en la comprobacion de cuenta");
                                 return;
                             }
                         }
@@ -145,7 +136,14 @@
                             }
                             else
                             {
-                                comprobar_cliente2(cu_ncu, cu_dn1, cu_dn2, cu_sal);
+                                if (cu_dn2 != "")
+                                {
+                                    comprobar_cliente2(cu_ncu, cu_dn1, cu_dn2, cu_sal);
+                                }
+                                else
+                                {
+                                    registrar_cuenta(cu_ncu, cu_dn1, cu_dn2, cu_sal);
+                                }
                             }
                         }
                 })
@@ -263,7 +261,24 @@
                     cu_sal = "0";
                 }
                 
-                alert(cu_ncu+" - "+cu_dn1+" - "+cu_dn2+" - "+cu_sal);
+                var datos3 = "cu_ncu="+cu_ncu+"&cu_dn1="+cu_dn1+"&cu_dn2="+cu_dn2+"&cu_sal="+cu_sal+"&op=registrar_cuenta";
+                alert(datos3);
+                $.ajax({
+                        type:'get',
+                        url:'apertura_cuenta',
+                        data:datos3,
+                        success:function(resp)
+                        {
+                            if (resp == 4)
+                            {
+                                alert("La cuenta con los siguientes datos "+cu_ncu+" - "+cu_dn1+" - "+cu_dn2+" - "+cu_sal+" ha sido registrada con exito");
+                            }
+                            else
+                            {
+                                alert("Ha habido un error al registrar la cuenta "+cu_ncu);
+                            }
+                        } 
+                    })
             }
         </script>
     </head>

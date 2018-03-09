@@ -7,6 +7,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,6 +100,93 @@ public class Apertura_cuentaDAO
             db.cerrarConexion(con);
         }
         return filas;
+    }
+    
+    public int registrar_cuenta(String cu_ncu_2, String cu_dn1_2, String cu_dn2, long cu_sal)
+    {
+        DBConnection db = new DBConnection();
+        Connection con = null;
+        PreparedStatement pstm = null;
+        PreparedStatement pstm2 = null;
+        PreparedStatement pstm3 = null;
+        PreparedStatement pstm4 = null;
+        int filas = 0;
+        int filas2 = 0;
+        int filas3 = 0;
+        int filas4 = 0;
+        
+        try {
+            con = db.getConnection();
+            
+            String sql="insert into cuentas values (?, ?, ?, ?);";
+            
+            
+            pstm = con.prepareStatement(sql);
+            
+            pstm.setString(1,cu_ncu_2);
+            pstm.setString(2,cu_dn1_2);
+            pstm.setString(3,cu_dn2);
+            pstm.setLong(4,cu_sal);
+            
+            filas = pstm.executeUpdate();
+            
+            //Cliente 1
+            String sql2="update clientes set cl_ncu = (select count(cu_ncu) from cuentas where cu_dn1 = ?), cl_sal = (select sum(cu_sal) from cuentas where cu_dn1 = ?) where cl_dni=?";
+            pstm2 = con.prepareStatement(sql2);
+            pstm2.setString(1, cu_dn1_2);
+            pstm2.setString(2, cu_dn1_2);
+            pstm2.setString(3, cu_dn1_2);
+            
+            filas2 = pstm2.executeUpdate();
+            
+            //Cliente 2
+            if (!cu_dn2.equals(""))
+            {
+                String sql3="update clientes set cl_ncu = (select count(cu_ncu) from cuentas where cu_dn1 = ?), cl_sal = (select sum(cu_sal) from cuentas where cu_dn1 = ?) where cl_dni=?";
+                pstm3 = con.prepareStatement(sql3);
+                pstm3.setString(1, cu_dn2);
+                pstm3.setString(2, cu_dn2);
+                pstm3.setString(3, cu_dn2);
+
+                filas3 = pstm3.executeUpdate();
+            }
+            
+            //cuenta movimientos
+            LocalDateTime ldt = LocalDateTime.now();
+            String hora = ldt.getHour()+"";
+            String minuto = ldt.getMinute()+"";
+            String segundo = ldt.getSecond()+"";
+
+            if (hora.length() == 1)
+            {
+                hora = 0+hora;
+            }
+            if (minuto.length() == 1)
+            {
+                minuto = 0+minuto;
+            }
+            if (segundo.length() == 1)
+            {
+                segundo = 0+segundo;
+            }
+
+            String mo_hor = hora+""+minuto+""+segundo;
+            String mo_fec = ldt.getYear()+"-"+ldt.getMonth().getValue()+"-"+ldt.getDayOfMonth();
+            
+            String sql3="insert into movimientos values (?, "+mo_fec+", "+mo_hor+", 'Alta de cuenta', ?)";
+            pstm4 = con.prepareStatement(sql2);
+            pstm4.setString(1, cu_ncu_2);
+            pstm4.setLong(1, cu_sal);
+            
+            filas4 = pstm4.executeUpdate();
+            
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Apertura_cuentaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.cerrarConexion(con);
+        }
+        return filas+filas2+filas3+filas4;
     }
 }
 

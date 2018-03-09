@@ -39,9 +39,14 @@ public class Apertura_cuentaServicios
         return resultado;
     }
     
-    public int registrar_cliente1( String cl_dni, String cl_nom, String cl_dir, String cl_tel, String cl_ema, String cl_fna, String cl_fcl)
+    public int registrar_cliente1(String cl_dni, String cl_nom, String cl_dir, String cl_tel, String cl_ema, String cl_fna, String cl_fcl)
     {
         Apertura_cuentaDAO dao = new Apertura_cuentaDAO();
         return dao.registrar_cliente1(cl_dni, cl_nom, cl_dir, cl_tel, cl_ema, cl_fna, cl_fcl);
+    }
+    public int registrar_cuenta(String cu_ncu_2, String cu_dn1_2, String cu_dn2, long cu_sal)
+    {
+        Apertura_cuentaDAO dao = new Apertura_cuentaDAO();
+        return dao.registrar_cuenta(cu_ncu_2, cu_dn1_2, cu_dn2, cu_sal);
     }
 }

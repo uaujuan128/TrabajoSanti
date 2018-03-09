@@ -95,6 +95,17 @@ public class Apertura_cuenta extends HttpServlet
                     
                 response.getWriter().print(servicio2.registrar_cliente1(cl_dni, cl_nom, cl_dir, cl_tel, cl_ema, cl_fna, cl_fcl));
                 break;
+            case ("registrar_cuenta"):
+                String cu_ncu_2 = request.getParameter("cu_ncu");
+                String cu_dn1_2 = request.getParameter("cu_dn1");
+                String cu_dn2 = request.getParameter("cu_dn2");
+                long cu_sal = parseLong(request.getParameter("cu_sal"));
+                
+                
+                Apertura_cuentaServicios servicio3 = new Apertura_cuentaServicios();
+                    
+                response.getWriter().print(servicio3.registrar_cuenta(cu_ncu_2, cu_dn1_2, cu_dn2, cu_sal));
+                break;
         }
         
     }
