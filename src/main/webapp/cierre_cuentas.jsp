@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Cerrar cuentas</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script>
             function eliminar_cuenta()
@@ -86,7 +86,7 @@
         </script>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h2>Cerrar cuentas</h2>
         Introduce numero de cuenta a eliminar: <input type="text" id="cu_ncu">
         <button onclick="eliminar_cuenta()">Eliminar</button>
     </body>

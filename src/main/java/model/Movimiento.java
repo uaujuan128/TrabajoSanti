@@ -9,17 +9,17 @@ package model;
  *
  * @author Juan
  */
-public class Movimientos {
+public class Movimiento {
     private String mo_ncu;
     private String mo_fec;
     private String mo_hor;
     private String mo_des;
     private int mo_imp;
 
-    public Movimientos() {
+    public Movimiento() {
     }
 
-    public Movimientos(String mo_ncu, String mo_fec, String mo_hor, String mo_des, int mo_imp) {
+    public Movimiento(String mo_ncu, String mo_fec, String mo_hor, String mo_des, int mo_imp) {
         this.mo_ncu = mo_ncu;
         this.mo_fec = mo_fec;
         this.mo_hor = mo_hor;

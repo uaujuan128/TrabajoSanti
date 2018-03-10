@@ -19,9 +19,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import modelo.Caja;
-import modelo.Cosa;
-import modelo.User;
+import model.Movimiento;
 import org.apache.http.HttpStatus;
 
 /**
@@ -48,30 +46,15 @@ public class JsonFiltro implements Filter {
         }
         ObjectMapper mapper = new ObjectMapper();
 
-        String usuario = request.getParameter("usuario");
-        String caja = request.getParameter("caja");
-        String cosa = request.getParameter("cosa");
+        String movimiento = request.getParameter("movimiento");
         
         String method = ((HttpServletRequest) request).getMethod();
 
-        if (usuario != null && !usuario.isEmpty()) 
+        if (movimiento != null && !movimiento.isEmpty()) 
         {
-            User a = mapper.readValue(usuario, new TypeReference<User>() {});
-            request.setAttribute("usuario", a);
+            Movimiento a = mapper.readValue(movimiento, new TypeReference<Movimiento>() {});
+            request.setAttribute("movimiento", a);
         } 
-        
-        if (caja != null && !caja.isEmpty()) 
-        {
-            Caja a = mapper.readValue(caja, new TypeReference<Caja>() {});
-            request.setAttribute("caja", a);
-        } 
-        
-        if (cosa != null && !cosa.isEmpty()) 
-        {
-            Cosa a = mapper.readValue(cosa, new TypeReference<Cosa>() {});
-            request.setAttribute("cosa", a);
-        } 
-
     }
 
     private void doAfterProcessing(ServletRequest request, ServletResponse response)

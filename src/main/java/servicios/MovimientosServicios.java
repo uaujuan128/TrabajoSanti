@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Cliente;
-import model.Movimientos;
+import model.Movimiento;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -27,7 +27,7 @@ public class MovimientosServicios {
     public String obtener_movimientos(String cu_ncu, String  fecha_inicial, String  fecha_final)
     {
         MovimientosDAO a = new MovimientosDAO();
-        List<Movimientos> lista = a.obtener_movimientos(cu_ncu, fecha_inicial, fecha_final);
+        List<Movimiento> lista = a.obtener_movimientos(cu_ncu, fecha_inicial, fecha_final);
         String resultado = "";
         
         resultado += "<table border = 1>";
@@ -39,6 +39,12 @@ public class MovimientosServicios {
         resultado += "</table>";
         
         return resultado;
+    }
+    
+    public int insertar_movimiento(Movimiento movimiento)
+    {
+        MovimientosDAO a = new MovimientosDAO();
+        return a.insertar_movimiento(movimiento);
     }
     
 }
