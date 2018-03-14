@@ -10,6 +10,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Cerrar cuentas</title>
+        <link rel="stylesheet/less" type="text/css" href="styles.less" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.0.0/less.min.js" ></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script>
             function eliminar_cuenta()
@@ -86,8 +88,19 @@
         </script>
     </head>
     <body>
+        <div>
+            <ul>
+            <li><a class="active" href="http://localhost:8080/TrabajoSanti/apertura_cuentas.jsp">Apertura de cuentas</a></li>
+            <li><a href="http://localhost:8080/TrabajoSanti/listado_movimientos.jsp">Listado de movimientos</a></li>
+            <li><a href="http://localhost:8080/TrabajoSanti/cierre_cuentas.jsp">Cierre de cuentas</a></li>
+            <li><a href="http://localhost:8000/movimientos.php">Movimientos en cuenta</a></li>
+        </ul>
+        
         <h2>Cerrar cuentas</h2>
         Introduce numero de cuenta a eliminar: <input type="text" id="cu_ncu">
         <button onclick="eliminar_cuenta()">Eliminar</button>
+        </div>
+        
+        
     </body>
 </html>

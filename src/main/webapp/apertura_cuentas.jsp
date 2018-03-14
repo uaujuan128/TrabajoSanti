@@ -10,6 +10,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Apertura de cuentas</title>
+        <link rel="stylesheet/less" type="text/css" href="styles.less" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.0.0/less.min.js" ></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script>
             function apertura_cuenta()
@@ -283,12 +285,22 @@
         </script>
     </head>
     <body>
-        <h1>Apertura de cuentas</h1>
-        Número de cuenta:<input type="text" id="cu_ncu"><br>
-        DNI titular 1<input type="text" id="cu_dn1"><br>
-        DNI titular 2 (opcional)<input type="text" id="cu_dn2"><br>
-        Salario:<input type="number" id="cu_sal"><br>
-        <button onclick="apertura_cuenta()">Crear cuenta</button><br>
+        <div>
+            <ul>
+                <li><a class="active" href="http://localhost:8080/TrabajoSanti/apertura_cuentas.jsp">Apertura de cuentas</a></li>
+                <li><a href="http://localhost:8080/TrabajoSanti/listado_movimientos.jsp">Listado de movimientos</a></li>
+                <li><a href="http://localhost:8080/TrabajoSanti/cierre_cuentas.jsp">Cierre de cuentas</a></li>
+                <li><a href="http://localhost:8000/movimientos.php">Movimientos en cuenta</a></li>
+            </ul>
+            
+            <h2>Apertura de cuentas</h2>
+            Número de cuenta<br><input type="text" id="cu_ncu"><br>
+            DNI titular 1<br><input type="text" id="cu_dn1"><br>
+            DNI titular 2 (opcional)<br><input type="text" id="cu_dn2"><br>
+            Salario<br><input type="number" id="cu_sal"><br>
+            <button onclick="apertura_cuenta()">Crear cuenta</button><br>
+        </div>
+        
         <div id ="registrar_cliente">
             
         </div>

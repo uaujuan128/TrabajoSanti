@@ -1,0 +1,143 @@
+.color_fondo(@color)
+{
+    background-color: @color
+}
+.estilo_input(@size)
+{
+    padding: 12px+@size 20px+@size;
+    margin: 8px+@size 0+@size;
+    display: inline-block;
+    border: 1px+@size solid #ccc;
+    border-radius: 4px+@size;
+    box-sizing: border-box;
+}
+
+.estilo_fuente(@size; @estilo)
+{
+    font-size: @size;
+    font-style: @estilo;
+    
+}
+
+.colores_generales(@menu; @fuente; @div; @botones)
+{
+    li
+    {
+        background-color: @menu;
+    }
+    font 
+    {
+        background-color: @fuente;
+    }
+    
+    div
+    {
+        background-color: @div;
+    }
+    
+    button
+    {
+        background-color: @botones;
+    }
+}
+
+
+//css
+
+
+@color  :blue;
+div
+{
+    .color_fondo(@color);
+    margin: 0px auto 0px auto;
+    width: 1000px;
+}
+
+body
+{
+    text-align:center;
+    .estilo_fuente(18px, italic)
+}
+
+ul
+{
+    .estilo_fuente(25px;arial);
+}
+
+
+button
+{
+    .estilo_fuente(34, italic)
+}
+
+//menu
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #111;
+}
+
+//forms
+
+input[type=text], select {
+    .estilo_input(2)
+}
+input[type=number], select {
+    .estilo_input(-5)
+}
+input[type=date], select {
+    .estilo_input(4)
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+div {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+//tablas
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+.colores_generales(red, blue, blue, grey);
